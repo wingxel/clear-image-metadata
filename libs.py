@@ -1,6 +1,8 @@
 import argparse
 from pathlib import Path
 import os
+from imghdr import what
+import sys
 
 
 def get_default_folder() -> str:
@@ -36,11 +38,26 @@ def get_args() -> dict:
         "-d", "--destination", default=get_default_folder(),
         help="Destination folder to save cleaned images"
     )
+    parser.add_argument(
+        "-p", "--preserve", action="store_true",
+        help="Preserve file names"
+    )
 
     args = parser.parse_args()
+
+    if os.path.exists(args.destination) and os.path.isfile(args.destination):
+        sys.exit(f"{args.destination} is not a folder. -d or --destination should be a folder")
+
+    if not os.path.exists(args.destination):
+        try:
+            os.makedirs(args.destination)
+        except Exception as error:
+            sys.exit(f"Failed to create directory {args.destination}\n{str(error)}")
+
     return {
         "images": args.image,
-        "destination_folder": args.destination
+        "destination_folder": args.destination,
+        "preserve": args.preserve
     }
 
 
@@ -60,4 +77,13 @@ def is_image(input_file: str) -> bool:
     :param input_file:
     :return:
     """
-    pass
+    return os.path.exists(input_file) and os.path.isfile(input_file) and what(input_file) is not None
+
+
+def get_random_hex(length: int = 16) -> str:
+    """
+    Get a random hex to be used as file name
+    :param length: byte size
+    :return:
+    """
+    return os.urandom(length).hex()
