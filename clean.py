@@ -2,6 +2,7 @@
 
 """
 Delete EXIF information from an image
+This will also help reduce the image size
 https://wingxel.github.io/website.index.html
 """
 
@@ -13,13 +14,13 @@ import time
 def delete_from_file(img_file: str, destination_folder: str, preserve: bool, delete_source: bool) -> None:
     """
     Helper function to main function
-    :param img_file:
-    :param destination_folder:
-    :param preserve:
-    :param delete_source:
+    :param img_file: source/original image
+    :param destination_folder: destination folder to save cleaned files
+    :param preserve: Preserve original file name
+    :param delete_source: Delete original image
     :return:
     """
-    print(f"{time.asctime(time.localtime())} - {img_file}")
+    print(f"{time.asctime(time.localtime())} - [cleaning] - {img_file}")
     destination_filename = utils.get_filename(img_file, preserve)
     utils.delete_exif_info(img_file, os.path.join(destination_folder, destination_filename), delete_source)
 

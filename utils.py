@@ -9,6 +9,7 @@ import os
 from imghdr import what
 import sys
 from PIL import Image
+import time
 
 
 def get_default_folder() -> str:
@@ -33,12 +34,12 @@ def get_args() -> dict:
     parser = argparse.ArgumentParser(
         prog="clean.py",
         description="Delete image EXIF information",
-        epilog="python3 clean.py -i image1 image2 image3 -d /home/user/Pictures"
+        epilog="python3 clean.py -i image1 image2 image3 folder1 -d /home/user/Pictures"
     )
 
     parser.add_argument(
         "-i", "--image", nargs="+", required=True,
-        help="Image file(s) to delete metadata"
+        help="Image file(s) to delete metadata or folder(s) containing images"
     )
     parser.add_argument(
         "-p", "--preserve", action="store_true",
@@ -88,6 +89,7 @@ def delete_exif_info(input_image: str, destination_file: str, delete_original: b
             new_img.save(destination_file)
             new_img.close()
         if delete_original:
+            print(f"{time.asctime(time.localtime())} - [deleting] - {input_image}")
             os.remove(input_image)
     except Exception as error:
         print(f"Error removing EXIF data for file {input_image}\n{str(error)}")
