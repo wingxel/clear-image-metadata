@@ -1,4 +1,4 @@
-# Clear Image EXIF Information
+# Clear Image EXIF Data
 ***
 Python script to remove EXIF information form any given image.
 ***
