@@ -1,3 +1,8 @@
+"""
+Project utility functions
+https://wingxel.github.io/website.index.html
+"""
+
 import argparse
 from pathlib import Path
 import os
@@ -40,6 +45,10 @@ def get_args() -> dict:
         help="Preserve file names"
     )
     parser.add_argument(
+        "-r", "--remove", action="store_true",
+        help="Delete source/original image file"
+    )
+    parser.add_argument(
         "-d", "--destination", default=get_default_folder(),
         help="Destination folder to save cleaned images"
     )
@@ -58,13 +67,15 @@ def get_args() -> dict:
     return {
         "images": args.image,
         "destination_folder": args.destination,
-        "preserve": args.preserve
+        "preserve": args.preserve,
+        "remove": args.remove
     }
 
 
-def delete_exif_info(input_image: str, destination_file: str) -> None:
+def delete_exif_info(input_image: str, destination_file: str, delete_original: bool) -> None:
     """
     Remove EXIF info and save the cleaned image
+    :param delete_original: remove source file
     :param input_image: input image file
     :param destination_file: output image file
     :return:
@@ -76,6 +87,8 @@ def delete_exif_info(input_image: str, destination_file: str) -> None:
             new_img.putdata(img_bytes)
             new_img.save(destination_file)
             new_img.close()
+        if delete_original:
+            os.remove(input_image)
     except Exception as error:
         print(f"Error removing EXIF data for file {input_image}\n{str(error)}")
 
