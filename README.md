@@ -2,6 +2,12 @@
 ***
 Python script to remove EXIF information form any given image.
 ***
+### Install requirements
+```shell
+python3 -m pip install -r requirements.txt
+```
+***
+### Run script with Python
 ```shell
 python3 clean.py -i /home/usr/folder/img1.png \
   /home/user/folder/img2.jpg /home/user/folder_with_images \
