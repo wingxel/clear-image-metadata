@@ -3,6 +3,7 @@ from pathlib import Path
 import os
 from imghdr import what
 import sys
+from PIL import Image
 
 
 def get_default_folder() -> str:
@@ -35,12 +36,12 @@ def get_args() -> dict:
         help="Image file(s) to delete metadata"
     )
     parser.add_argument(
-        "-d", "--destination", default=get_default_folder(),
-        help="Destination folder to save cleaned images"
-    )
-    parser.add_argument(
         "-p", "--preserve", action="store_true",
         help="Preserve file names"
+    )
+    parser.add_argument(
+        "-d", "--destination", default=get_default_folder(),
+        help="Destination folder to save cleaned images"
     )
 
     args = parser.parse_args()
@@ -68,7 +69,15 @@ def delete_exif_info(input_image: str, destination_file: str) -> None:
     :param destination_file: output image file
     :return:
     """
-    pass
+    try:
+        with Image.open(input_image) as img:
+            img_bytes = list(img.getdata())
+            new_img = Image.new(img.mode, img.size)
+            new_img.putdata(img_bytes)
+            new_img.save(destination_file)
+            new_img.close()
+    except Exception as error:
+        print(f"Error removing EXIF data for file {input_image}\n{str(error)}")
 
 
 def is_image(input_file: str) -> bool:
@@ -87,3 +96,16 @@ def get_random_hex(length: int = 16) -> str:
     :return:
     """
     return os.urandom(length).hex()
+
+
+def get_filename(abs_file_name: str, preserve: bool) -> str:
+    """
+    Get final filename for cleaned image
+    :param abs_file_name: source file
+    :param preserve: use hex or original filename
+    :return:
+    """
+    destination_filename = str(os.path.basename(abs_file_name))
+    if not preserve:
+        destination_filename = f"{get_random_hex()}.{destination_filename.split('.')[-1]}"
+    return destination_filename
