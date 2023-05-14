@@ -7,6 +7,7 @@ https://wingxel.github.io/website.index.html
 
 import utils
 import os
+import time
 
 
 def delete_from_file(img_file: str, destination_folder: str, preserve: bool, delete_source: bool) -> None:
@@ -18,6 +19,7 @@ def delete_from_file(img_file: str, destination_folder: str, preserve: bool, del
     :param delete_source:
     :return:
     """
+    print(f"{time.asctime(time.localtime())} - {img_file}")
     destination_filename = utils.get_filename(img_file, preserve)
     utils.delete_exif_info(img_file, os.path.join(destination_folder, destination_filename), delete_source)
 
