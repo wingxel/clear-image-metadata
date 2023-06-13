@@ -39,9 +39,9 @@ def get_args() -> dict:
 
     parser.add_argument(
         "-n", "--num_procs", default=os.cpu_count(), type=int,
-        help="Number of python processes to use (recommended - number less or equal"
-             " to number of cpu core available in your computer, if you set more that cpu_core_count "
-             "the computer will freeze)"
+        help=f"Number of python processes to use, default is {os.cpu_count()} (recommended - number less "
+             "or equal to number of cpu core available in your computer, if you "
+             "set more that cpu_core_count the computer will freeze)"
     )
 
     parser.add_argument(
@@ -58,7 +58,7 @@ def get_args() -> dict:
     )
     parser.add_argument(
         "-d", "--destination", default=get_default_folder(),
-        help="Destination folder to save cleaned images"
+        help=f"Destination folder to save cleaned images, default is {get_default_folder()}"
     )
 
     args = parser.parse_args()
