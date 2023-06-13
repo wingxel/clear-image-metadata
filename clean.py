@@ -36,7 +36,7 @@ def main() -> None:
     # The number of processes launched will be determined by the number
     # available cpu cores
     # You can view the launched processes in any system monitor tool/software
-    with ProcessPoolExecutor(max_workers=os.cpu_count()) as executor:
+    with ProcessPoolExecutor(max_workers=provided_args["num_procs"]) as executor:
         for image_file in provided_args["images"]:
             if os.path.isdir(image_file):
                 for parent_dir, child_dirs, child_files in os.walk(image_file):

@@ -34,7 +34,14 @@ def get_args() -> dict:
     parser = argparse.ArgumentParser(
         prog="clean.py",
         description="Delete image EXIF information",
-        epilog="python3 clean.py -i image1 image2 image3 folder1 -d /home/user/Pictures"
+        epilog="python3 clean.py -i image1 image2 image3 folder1 -d /home/user/Pictures -n 3"
+    )
+
+    parser.add_argument(
+        "-n", "--num_procs", default=os.cpu_count(),
+        help="Number of python processes to use (recommended - number less or equal"
+             " to number of cpu core available in your computer, if you set more that cpu_core_count "
+             "the computer will freeze)"
     )
 
     parser.add_argument(
@@ -69,7 +76,8 @@ def get_args() -> dict:
         "images": args.image,
         "destination_folder": args.destination,
         "preserve": args.preserve,
-        "remove": args.remove
+        "remove": args.remove,
+        "num_procs": args.num_procs
     }
 
 
