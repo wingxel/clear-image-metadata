@@ -9,7 +9,7 @@ https://wingxel.github.io/website.index.html
 import utils
 import os
 import time
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ProcessPoolExecutor
 
 
 def delete_from_file(img_file: str, destination_folder: str, preserve: bool, delete_source: bool) -> None:
@@ -32,33 +32,27 @@ def main() -> None:
     :return:
     """
     provided_args = utils.get_args()
-    executor = ThreadPoolExecutor(max_workers=4)
-    for image_file in provided_args["images"]:
-        if os.path.isdir(image_file):
-            for parent_dir, child_dirs, child_files in os.walk(image_file):
-                for child_f in child_files:
-                    img = os.path.join(parent_dir, child_f)
-                    if utils.is_image(img):
-                        # delete_from_file(
-                        #     img, provided_args["destination_folder"],
-                        #     provided_args["preserve"], provided_args["remove"]
-                        # )
-                        executor.submit(
-                            delete_from_file, img, provided_args["destination_folder"],
-                            provided_args["preserve"], provided_args["remove"]
-                        )
-        elif utils.is_image(image_file):
-            # delete_from_file(
-            #     image_file, provided_args["destination_folder"],
-            #     provided_args["preserve"],
-            #     provided_args["remove"]
-            # )
-            executor.submit(
-                image_file, provided_args["destination_folder"],
-                provided_args["preserve"],
-                provided_args["remove"]
-            )
-    executor.shutdown(wait=True)
+    # This uses multiple python processes to make the cleaning process fast
+    # The number of processes launched will be determined by the number
+    # available cpu cores
+    # You can view the launched processes in any system monitor tool/software
+    with ProcessPoolExecutor(max_workers=os.cpu_count()) as executor:
+        for image_file in provided_args["images"]:
+            if os.path.isdir(image_file):
+                for parent_dir, child_dirs, child_files in os.walk(image_file):
+                    for child_f in child_files:
+                        img = os.path.join(parent_dir, child_f)
+                        if utils.is_image(img):
+                            executor.submit(
+                                delete_from_file, img, provided_args["destination_folder"],
+                                provided_args["preserve"], provided_args["remove"]
+                            )
+            elif utils.is_image(image_file):
+                executor.submit(
+                    image_file, provided_args["destination_folder"],
+                    provided_args["preserve"],
+                    provided_args["remove"]
+                )
 
 
 if __name__ == '__main__':
