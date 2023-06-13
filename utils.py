@@ -38,7 +38,7 @@ def get_args() -> dict:
     )
 
     parser.add_argument(
-        "-n", "--num_procs", default=os.cpu_count(),
+        "-n", "--num_procs", default=os.cpu_count(), type=int,
         help="Number of python processes to use (recommended - number less or equal"
              " to number of cpu core available in your computer, if you set more that cpu_core_count "
              "the computer will freeze)"
@@ -71,6 +71,11 @@ def get_args() -> dict:
             os.makedirs(args.destination)
         except Exception as error:
             sys.exit(f"Failed to create directory {args.destination}\n{str(error)}")
+
+    if args.num_procs > os.cpu_count():
+        response = input(f"Using {args.num_procs} processes might freeze the computer continue? (y/n): ")
+        if response.strip().lower() not in ["y", "yes", "continue"]:
+            sys.exit(f"{response} - Aborted")
 
     return {
         "images": args.image,
