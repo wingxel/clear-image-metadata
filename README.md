@@ -11,7 +11,7 @@ python3 -m pip install -r requirements.txt
 ```shell
 python3 clean.py -i /home/usr/folder/img1.png \
   /home/user/folder/img2.jpg /home/user/folder_with_images \
-  -d /home/user/Pictures/cleaned --remove --preserve
+  -d /home/user/Pictures/cleaned -n 2 --remove --preserve
 ```
 ***
 ## Commandline Options
