@@ -18,6 +18,8 @@ def get_default_folder() -> str:
     :return:
     """
     default_pictures_folder = os.path.join(str(Path.home()), "Pictures")
+    if os.path.isdir("/sdcard/"):
+        default_pictures_folder = "/sdcard/Pictures/no_exif"
     if not os.path.exists(default_pictures_folder):
         try:
             os.makedirs(default_pictures_folder)

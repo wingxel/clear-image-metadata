@@ -1,5 +1,6 @@
-.idea
-__pycache__
-build
-dist
+/.idea
+/__pycache__
+/build
+/dist
 clean.spec
+/.vscode
