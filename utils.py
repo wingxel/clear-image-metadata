@@ -24,7 +24,7 @@ def get_default_folder() -> str:
         try:
             os.makedirs(default_pictures_folder)
         except Exception as error:
-            print(f"Error creating folder {default_pictures_folder}\n{str(error)}")
+            sys.exit(f"Error creating folder {default_pictures_folder}\n{str(error)}")
     return default_pictures_folder
 
 
