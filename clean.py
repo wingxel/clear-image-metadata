@@ -4,6 +4,7 @@
 Delete EXIF information from an image
 This will also help reduce the image size
 https://wingxel.github.io/website.index.html
+--------------------------------------------
 """
 
 import utils
