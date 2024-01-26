@@ -34,9 +34,9 @@ def get_args() -> dict:
     :return:
     """
     parser = argparse.ArgumentParser(
-        prog="clean.py",
+        prog="clean",
         description="Delete image EXIF information",
-        epilog="python3 clean.py -i image1 image2 image3 folder1 -d /home/user/Pictures -n 3"
+        epilog="python3 clean -i image1 image2 image3 folder1 -d /home/user/Pictures -n 3"
     )
 
     parser.add_argument(
