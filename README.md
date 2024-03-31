@@ -1,6 +1,6 @@
 # Clear Image EXIF Data
 ***
-Python script to remove EXIF information form any image.
+Python script to remove EXIF information form images.
 ***
 ### Install requirements
 ```shell
