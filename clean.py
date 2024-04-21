@@ -55,7 +55,7 @@ def main() -> None:
                     provided_args["remove"]
                 )
             else:
-                print(f"Error! Unknown file : {image_file}")
+                print(f"Error! Unknown file : the file {image_file} might not be an image.")
 
 
 if __name__ == '__main__':
