@@ -50,10 +50,12 @@ def main() -> None:
                             )
             elif utils.is_image(image_file):
                 executor.submit(
-                    image_file, provided_args["destination_folder"],
+                    delete_from_file, image_file, provided_args["destination_folder"],
                     provided_args["preserve"],
                     provided_args["remove"]
                 )
+            else:
+                print(f"Error! Unkown file : {image_file}")
 
 
 if __name__ == '__main__':
