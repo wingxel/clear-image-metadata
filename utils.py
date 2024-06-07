@@ -47,8 +47,8 @@ def get_args() -> dict:
     parser.add_argument(
         "-n", "--num_procs", default=m_cpu_count, type=int,
         help=f"Number of python processes to use, default is {os.cpu_count()} (recommended - number less "
-             "or equal to number of cpu core available in your computer, if you "
-             "set more that cpu_core_count the computer will freeze)"
+             "than the number of cpu core available in your computer. If you "
+             "set more or equal to available cpu cores, the computer will freeze)"
     )
 
     parser.add_argument(
