@@ -39,8 +39,13 @@ def get_args() -> dict:
         epilog="python3 clean -i image1 image2 image3 folder1 -d /home/user/Pictures -n 3"
     )
 
+    m_cpu_count = os.cpu_count()
+    if m_cpu_count > 1:
+        # To prevent computer from freezing.
+        m_cpu_count -= 1
+    
     parser.add_argument(
-        "-n", "--num_procs", default=os.cpu_count(), type=int,
+        "-n", "--num_procs", default=m_cpu_count, type=int,
         help=f"Number of python processes to use, default is {os.cpu_count()} (recommended - number less "
              "or equal to number of cpu core available in your computer, if you "
              "set more that cpu_core_count the computer will freeze)"
@@ -74,7 +79,7 @@ def get_args() -> dict:
         except Exception as error:
             sys.exit(f"Failed to create directory {args.destination}\n{str(error)}")
 
-    if args.num_procs > os.cpu_count():
+    if args.num_procs >= os.cpu_count():
         response = input(f"Using {args.num_procs} processes might freeze the computer continue? (y/n): ")
         if response.strip().lower() not in ["y", "yes", "continue"]:
             sys.exit(f"{response} - Aborted")
