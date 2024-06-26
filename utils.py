@@ -43,7 +43,7 @@ def get_args() -> dict:
     if m_cpu_count > 1:
         # To prevent computer from freezing.
         m_cpu_count -= 1
-    
+
     parser.add_argument(
         "-n", "--num_procs", default=m_cpu_count, type=int,
         help=f"Number of python processes to use, default is {os.cpu_count()} (recommended - number less "
