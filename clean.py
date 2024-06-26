@@ -13,7 +13,12 @@ import time
 from concurrent.futures import ProcessPoolExecutor
 
 
-def delete_from_file(img_file: str, destination_folder: str, preserve: bool, delete_source: bool) -> None:
+def delete_from_file(
+        img_file: str,
+        destination_folder: str,
+        preserve: bool,
+        delete_source: bool
+) -> None:
     """
     Helper function to main function
     :param img_file: source/original image
@@ -24,7 +29,11 @@ def delete_from_file(img_file: str, destination_folder: str, preserve: bool, del
     """
     print(f"{time.asctime(time.localtime())} - [cleaning] - {img_file}")
     destination_filename = utils.get_filename(img_file, preserve)
-    utils.delete_exif_info(img_file, os.path.join(destination_folder, destination_filename), delete_source)
+    utils.delete_exif_info(
+        img_file,
+        os.path.join(destination_folder, destination_filename),
+        delete_source
+    )
 
 
 def main() -> None:
@@ -42,15 +51,20 @@ def main() -> None:
             if os.path.isdir(image_file):
                 for parent_dir, child_dirs, child_files in os.walk(image_file):
                     for child_f in child_files:
-                        img = os.path.join(parent_dir, child_f)
+                        img = str(os.path.join(parent_dir, child_f))
                         if utils.is_image(img):
                             executor.submit(
-                                delete_from_file, img, provided_args["destination_folder"],
-                                provided_args["preserve"], provided_args["remove"]
+                                delete_from_file,
+                                img,
+                                provided_args["destination_folder"],
+                                provided_args["preserve"],
+                                provided_args["remove"]
                             )
             elif utils.is_image(image_file):
                 executor.submit(
-                    delete_from_file, image_file, provided_args["destination_folder"],
+                    delete_from_file,
+                    image_file,
+                    provided_args["destination_folder"],
                     provided_args["preserve"],
                     provided_args["remove"]
                 )
